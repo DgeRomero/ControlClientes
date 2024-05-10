@@ -16,7 +16,7 @@ namespace negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("select U.nombre Nombre, Precio, A.Descripcion Articulos, U.Admin Pagado, U.Id Id from ARTICULOS A, USERS U");
+                datos.setearConsulta("select Nombre, Articulos, Precio, Pagado, Id from CLIENTES");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -42,5 +42,66 @@ namespace negocio
                 datos.cerrarConexion();
             } 
         }
+        public void agregar(Cliente nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("insert into CLIENTES (Nombre, Articulos, Precio, Pagado) values (@nombre, @articulos, @precio, @pagado)");
+                datos.setearParametro("@nombre", nuevo.Nombre);
+                datos.setearParametro("@articulos", nuevo.Articulos);
+                datos.setearParametro("@precio", nuevo.Precio);
+                datos.setearParametro("@pagado", nuevo.Pagado);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        public void modificar(Cliente client)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("update CLIENTES set Nombre = @nombre, Articulos = @articulos, Precio = @precio, Pagado = @pagado where Id = @id");
+                datos.setearParametro("@nombre", client.Nombre);
+                datos.setearParametro("@articulos", client.Articulos);
+                datos.setearParametro("@precio", client.Precio);
+                datos.setearParametro("@pagado", client.Nombre);
+                datos.setearParametro("@id", client.Id);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        public void eliminar(Cliente client)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("detele from CLIENTES where Id = @id");
+                datos.setearParametro("@id", client.Id);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        
     }
 }
