@@ -10,13 +10,16 @@ namespace negocio
     public class ClienteNegocio
     {
         //select U.nombre, precio, admin, A.Descripcion from ARTICULOS A, USERS U where U.id = 1
-        public List<Cliente> listar()
+        public List<Cliente> listar(string id = "")
         {
             List<Cliente> lista = new List<Cliente>();
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("select Nombre, Articulos, Precio, Pagado, Id from CLIENTES");
+                if(id != "")
+                    datos.setearConsulta("select Nombre, Articulos, Precio, Pagado, Id from CLIENTES where Id =" + id);
+                else
+                    datos.setearConsulta("select Nombre, Articulos, Precio, Pagado, Id from CLIENTES");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -52,6 +55,7 @@ namespace negocio
                 datos.setearParametro("@articulos", nuevo.Articulos);
                 datos.setearParametro("@precio", nuevo.Precio);
                 datos.setearParametro("@pagado", nuevo.Pagado);
+                datos.ejecutarAccion();
             }
             catch (Exception ex)
             {
@@ -72,7 +76,7 @@ namespace negocio
                 datos.setearParametro("@nombre", client.Nombre);
                 datos.setearParametro("@articulos", client.Articulos);
                 datos.setearParametro("@precio", client.Precio);
-                datos.setearParametro("@pagado", client.Nombre);
+                datos.setearParametro("@pagado", client.Pagado);
                 datos.setearParametro("@id", client.Id);
 
                 datos.ejecutarAccion();
@@ -87,13 +91,13 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
-        public void eliminar(Cliente client)
+        public void eliminar(int id)
         {
-            AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("detele from CLIENTES where Id = @id");
-                datos.setearParametro("@id", client.Id);
+                AccesoDatos datos = new AccesoDatos();
+                datos.setearConsulta("delete from CLIENTES where Id = @id");
+                datos.setearParametro("@id", id);
                 datos.ejecutarAccion();
             }
             catch (Exception ex)

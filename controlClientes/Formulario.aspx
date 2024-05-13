@@ -11,8 +11,8 @@
                 <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control"></asp:TextBox>
             </div>
             <div class="mb-2">
-                <label for="txtDescripcion" class="form-label">Descripcion</label>
-                <asp:TextBox ID="txtDescripcion" runat="server" CssClass="form-control" TextMode="MultiLine"></asp:TextBox>
+                <label for="txtArticulos" class="form-label">Descripcion</label>
+                <asp:TextBox ID="txtArticulos" runat="server" CssClass="form-control" TextMode="MultiLine"></asp:TextBox>
             </div>
             <div class="mb-2">
                 <label for="txtPrecio" class="form-label">Precio</label>
