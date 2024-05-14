@@ -17,9 +17,9 @@ namespace negocio
             try
             {
                 if(id != "")
-                    datos.setearConsulta("select Nombre, Articulos, Precio, Pagado, Id from CLIENTES where Id =" + id);
+                    datos.setearConsulta("select Nombre, Articulos, Precio, Pagado, FaltaPagar, Id from CLIENTES where Id =" + id);
                 else
-                    datos.setearConsulta("select Nombre, Articulos, Precio, Pagado, Id from CLIENTES");
+                    datos.setearConsulta("select Nombre, Articulos, Precio, Pagado, FaltaPagar, Id from CLIENTES");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -30,6 +30,7 @@ namespace negocio
                     aux.Articulos = (string)datos.Lector["Articulos"];
                     aux.Pagado = (bool)datos.Lector["Pagado"];
                     aux.Precio = (decimal)datos.Lector["Precio"];
+                    aux.FaltaPagar = (decimal)datos.Lector["FaltaPagar"];
 
                     lista.Add(aux);
                 }
@@ -50,11 +51,12 @@ namespace negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("insert into CLIENTES (Nombre, Articulos, Precio, Pagado) values (@nombre, @articulos, @precio, @pagado)");
+                datos.setearConsulta("insert into CLIENTES (Nombre, Articulos, Precio, Pagado, FaltaPagar) values (@nombre, @articulos, @precio, @pagado, @falta)");
                 datos.setearParametro("@nombre", nuevo.Nombre);
                 datos.setearParametro("@articulos", nuevo.Articulos);
                 datos.setearParametro("@precio", nuevo.Precio);
                 datos.setearParametro("@pagado", nuevo.Pagado);
+                datos.setearParametro("@falta", nuevo.FaltaPagar);
                 datos.ejecutarAccion();
             }
             catch (Exception ex)
@@ -72,11 +74,12 @@ namespace negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("update CLIENTES set Nombre = @nombre, Articulos = @articulos, Precio = @precio, Pagado = @pagado where Id = @id");
+                datos.setearConsulta("update CLIENTES set Nombre = @nombre, Articulos = @articulos, Precio = @precio, Pagado = @pagado, FaltaPagar = @falta where Id = @id");
                 datos.setearParametro("@nombre", client.Nombre);
                 datos.setearParametro("@articulos", client.Articulos);
                 datos.setearParametro("@precio", client.Precio);
                 datos.setearParametro("@pagado", client.Pagado);
+                datos.setearParametro("@falta", client.FaltaPagar);
                 datos.setearParametro("@id", client.Id);
 
                 datos.ejecutarAccion();

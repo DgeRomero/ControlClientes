@@ -11,10 +11,12 @@ namespace controlClientes
 {
     public partial class Formulario : System.Web.UI.Page
     {
+        public bool faltaPagar = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+               
                 string id = Request.QueryString["id"] != null ? Request.QueryString["id"] : "";
                 if (id != "" && !IsPostBack)
                 {
@@ -23,9 +25,12 @@ namespace controlClientes
                     Session.Add("seleccionado", seleccionado);
 
                     txtNombre.Text = seleccionado.Nombre;
-                    txtPrecio.Text = seleccionado.Precio.ToString();
                     txtArticulos.Text = seleccionado.Articulos;
-                    cbxPago.Checked = seleccionado.Pagado;
+                    txtPrecio.Text = seleccionado.Precio.ToString();
+                    txNoPago.Text = seleccionado.FaltaPagar.ToString();
+                    cbxPagado.Checked = seleccionado.Pagado;
+                    cbxFaltaPagar.Checked = !seleccionado.Pagado;
+                    faltaPagar = cbxFaltaPagar.Checked;
                 }
             }
             catch (Exception ex)
@@ -45,7 +50,14 @@ namespace controlClientes
                 nuevo.Nombre = txtNombre.Text;
                 nuevo.Precio = decimal.Parse(txtPrecio.Text);
                 nuevo.Articulos = txtArticulos.Text;
-                nuevo.Pagado = cbxPago.Checked;
+                nuevo.Pagado = cbxPagado.Checked;
+                if (txNoPago.Text != "")
+                    nuevo.FaltaPagar = decimal.Parse(txNoPago.Text);
+                else
+                {
+                    nuevo.FaltaPagar = 0;
+                }
+
                 if (Request.QueryString["id"] != null)
                 {
                     nuevo.Id = int.Parse(Request.QueryString["id"]);
@@ -61,6 +73,31 @@ namespace controlClientes
 
                 Session.Add("error", ex.ToString());
             }
+        }
+
+        protected void cbxFaltaPagar_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbxFaltaPagar.Checked)
+            {
+                faltaPagar = true;
+                cbxPagado.Checked = false;
+            }
+            else
+            {
+                faltaPagar = false;
+                txNoPago.Text = "";
+            }
+        }
+
+        protected void cbxPagado_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbxPagado.Checked)
+            {
+                cbxFaltaPagar.Checked = false;
+                txNoPago.Text = "";
+                faltaPagar = false;
+            }
+            
         }
     }
 }

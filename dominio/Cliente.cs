@@ -13,5 +13,6 @@ namespace dominio
         public string Articulos { get; set; }
         public decimal Precio { get; set; }
         public bool Pagado { get; set; }
+        public decimal FaltaPagar { get; set; }
     }
 }

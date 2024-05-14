@@ -38,8 +38,9 @@ namespace controlClientes
                 int index = int.Parse(e.CommandArgument.ToString());
                 Cliente seleccionado = negocio.listar()[index];
                 int id = seleccionado.Id;
-                negocio.eliminar(id);
-                Response.Redirect("Default.aspx", false);
+                //negocio.eliminar(id);
+                //Response.Redirect("Default.aspx", false);
+                Response.Redirect("ConfirmaEliminar.aspx?id=" + id, false);
             }
         }
 
